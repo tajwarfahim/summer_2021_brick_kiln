@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+* {
+  box-sizing: border-box;
+}
+
+/* Create three equal columns that floats next to each other */
+.column {
+  float: center;
+  width: 55.00%;
+  padding: 10px;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+</style>
+</head>
+<body>
+
+<div class="row">
+  <div class="column" style="background-color:#fffb94;">
+    <h3>Examples</h3>
+    {% for filename in examples.keys() %}
+        <h5>{{ filename }}</h5>
+        {% for img in examples[filename]['images'] %}
+            <p>{{img|safe}}</p>
+            {% set lon = examples[filename]['lon'][loop.index0] %}
+            {% set lat = examples[filename]['lat'][loop.index0] %}
+            <p>Lon: {{ lon }}</p>
+            <p>Lat: {{ lat }}</p>
+            <a href='http://maps.google.com/maps?q={{ lat }},{{ lon }}&t=k' target="_blank">Look up on Google Maps</a> </p>
+            <br>
+        {% endfor %}
+        <hr>
+    {% endfor %}
+  </div>
+</div>
+
+</body>
+</html>
