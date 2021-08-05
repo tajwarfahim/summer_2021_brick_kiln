@@ -158,6 +158,11 @@ def compare_two_hdf5_files_numpy(filepath_1, filepath_2):
             if is_duplicate:
                 duplicates_between_files.append(i)
 
+    print(
+        "\nThere have been ", len(duplicates_between_files),
+        " duplicates between the two files.\n"
+    )
+
     return datasets_1, datasets_2, duplicates_between_files
 
 
