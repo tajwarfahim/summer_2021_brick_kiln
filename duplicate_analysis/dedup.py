@@ -43,6 +43,9 @@ def compare_two_different_directories(source_dir, target_dir, dedupped_dir):
     target_files = get_all_hdf5_files_in_a_directory(dir_path=target_dir)
     source_files = get_all_hdf5_files_in_a_directory(dir_path=source_dir)
 
+    if not os.path.isdir(dedupped_dir):
+        os.makedirs(dedupped_dir)
+
     print("\n Target directory:", target_dir)
     print("Dataset files in directory: ", target_files)
     print("\nSource directory:", source_dir)

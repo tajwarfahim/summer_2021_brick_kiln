@@ -164,8 +164,8 @@ def compare_two_hdf5_files(filepath_1, filepath_2):
 
 def remove_duplicates(target_path, source_path, dedupped_file_path, remove_duplicates):
     datasets_target, datasets_source, duplicates_between_files = compare_two_hdf5_files(
-        filepath_1=filepath_1,
-        filepath_2=filepath_2,
+        filepath_1=target_path,
+        filepath_2=source_path,
     )
 
     if not remove_duplicates:
