@@ -232,6 +232,5 @@ def remove_duplicates(target_path, source_path, dedupped_file_path):
 
         new_dataset = np.array(new_dataset)
         dedupped_hdf5_file.create_dataset(key, data=new_dataset)
-        print("x")
 
     dedupped_hdf5_file.close()
