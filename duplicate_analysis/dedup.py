@@ -5,7 +5,8 @@ import h5py as h5
 import argparse
 
 # imports from our code
-import .check_duplicates_utils as lib
+import sys
+from .check_duplicates_utils import *
 
 
 def parse_script_arguments():
