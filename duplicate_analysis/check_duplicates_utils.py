@@ -154,7 +154,7 @@ def compare_two_hdf5_files(filepath_1, filepath_2):
                 duplicates_between_files.append(i)
 
     print(
-        "\mThere have been ", len(duplicates_between_files),
+        "\nThere have been ", len(duplicates_between_files),
         " duplicates between the two files.\n"
     )
 
