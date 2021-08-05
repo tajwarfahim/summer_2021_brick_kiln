@@ -123,7 +123,45 @@ def hash_datasets_of_a_single_file(num_datapoints, datasets):
     return hash_strings
 
 
-def compare_two_hdf5_files(filepath_1, filepath_2):
+def compare_two_hdf5_files_numpy(filepath_1, filepath_2):
+    file_1 = open_hdf5_file(filepath_1)
+    file_2 = open_hdf5_file(filepath_2)
+
+    common_keys = get_common_keys(file_1 = file_1, file_2 = file_2)
+    print("\n Common keys between two files: ", common_keys, "\n")
+
+    num_datapoints_1, datasets_1 = retrieve_datasets_from_hdf5_file(
+        hdf5_file = file_1, keys = common_keys
+    )
+    num_datapoints_2, datasets_2 = retrieve_datasets_from_hdf5_file(
+        hdf5_file = file_2, keys = common_keys
+    )
+
+    file_1.close()
+    file_2.close()
+
+    print("\n Number of datapoints in 1st file: ", num_datapoints_1)
+    print("Number of datapoints in 2nd file: ", num_datapoints_2, "\n")
+
+    duplicates_between_files = []
+    for i in range(num_datapoints_1):
+        for j in range(num_datapoints_2):
+            is_duplicate = True
+            for key in common_keys:
+                array_1 = datasets_1[key][i]
+                array_2 = datasets_2[key][j]
+
+                if not np.array_equal(a1=array_1, a2=array_2):
+                    is_duplicate = False
+                    break
+
+            if is_duplicate:
+                duplicates_between_files.append(i)
+
+    return datasets_1, datasets_2, duplicates_between_files
+
+
+def compare_two_hdf5_files_hashing(filepath_1, filepath_2):
     file_1 = open_hdf5_file(filepath_1)
     file_2 = open_hdf5_file(filepath_2)
 
@@ -166,7 +204,7 @@ def compare_two_hdf5_files(filepath_1, filepath_2):
 
 
 def remove_duplicates(target_path, source_path, dedupped_file_path, remove_duplicates):
-    datasets_target, datasets_source, duplicates_between_files = compare_two_hdf5_files(
+    datasets_target, datasets_source, duplicates_between_files = compare_two_hdf5_files_numpy(
         filepath_1=target_path,
         filepath_2=source_path,
     )
