@@ -11,9 +11,11 @@ from .check_duplicates_utils import *
 
 def parse_script_arguments():
     parser = argparse.ArgumentParser()
+    
     # task option
     parser.add_argument("--check_single_directory", action="store_true")
     parser.add_argument("--compare_two_directories", action="store_true")
+    parser.remove_duplicates("--remove_duplicates", action="store_true")
 
     # file path option
     parser.add_argument("--target_dir", type=str)
@@ -39,7 +41,7 @@ def check_duplicates_in_same_directory(target_dir):
             )
 
 
-def compare_two_different_directories(source_dir, target_dir, dedupped_dir):
+def compare_two_different_directories(source_dir, target_dir, dedupped_dir, remove_duplicates):
     target_files = get_all_hdf5_files_in_a_directory(dir_path=target_dir)
     source_files = get_all_hdf5_files_in_a_directory(dir_path=source_dir)
 
@@ -66,7 +68,7 @@ def compare_two_different_directories(source_dir, target_dir, dedupped_dir):
                 target_path=target_path,
                 source_path=source_files[j],
                 dedupped_file_path=target_files[i],
-                remove_duplicates=False
+                remove_duplicates=remove_duplicates
             )
 
 
@@ -81,6 +83,7 @@ def run_script():
             source_dir=args.source_dir,
             target_dir=args.target_dir,
             dedupped_dir=args.dedupped_dir,
+            remove_duplicates=args.remove_duplicates
         )
 
 if __name__ == "__main__":
