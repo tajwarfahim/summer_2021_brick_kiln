@@ -41,7 +41,7 @@ def check_duplicates_in_same_directory(target_dir):
             )
 
 
-def compare_two_different_directories(source_dir, target_dir, dedupped_dir, remove_duplicates):
+def compare_two_different_directories(source_dir, target_dir, dedupped_dir, should_remove_duplicates):
     target_files = get_all_hdf5_files_in_a_directory(dir_path=target_dir)
     source_files = get_all_hdf5_files_in_a_directory(dir_path=source_dir)
 
@@ -68,7 +68,7 @@ def compare_two_different_directories(source_dir, target_dir, dedupped_dir, remo
                 target_path=target_path,
                 source_path=source_files[j],
                 dedupped_file_path=target_files[i],
-                remove_duplicates=remove_duplicates,
+                remove_duplicates=should_remove_duplicates,
             )
 
 
@@ -83,7 +83,7 @@ def run_script():
             source_dir=args.source_dir,
             target_dir=args.target_dir,
             dedupped_dir=args.dedupped_dir,
-            remove_duplicates=args.remove_duplicates,
+            should_remove_duplicates=args.remove_duplicates,
         )
 
 if __name__ == "__main__":
