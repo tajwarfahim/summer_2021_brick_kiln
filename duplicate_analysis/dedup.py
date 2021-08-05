@@ -11,11 +11,11 @@ from .check_duplicates_utils import *
 
 def parse_script_arguments():
     parser = argparse.ArgumentParser()
-    
+
     # task option
     parser.add_argument("--check_single_directory", action="store_true")
     parser.add_argument("--compare_two_directories", action="store_true")
-    parser.remove_duplicates("--remove_duplicates", action="store_true")
+    parser.add_argument("--remove_duplicates", action="store_true")
 
     # file path option
     parser.add_argument("--target_dir", type=str)
