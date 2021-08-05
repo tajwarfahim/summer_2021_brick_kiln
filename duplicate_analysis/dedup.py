@@ -18,11 +18,11 @@ def parse_script_arguments():
 
 
 def check_duplicates_in_same_directory(target_dir):
-    all_files = lib.get_all_hdf5_files_in_a_directory(dir_path = target_dir)
+    all_files = get_all_hdf5_files_in_a_directory(dir_path = target_dir)
 
     for i in range(len(all_files) - 1):
         for j in range(i + 1, len(all_files)):
-            lib.compare_two_hdf5_files(
+            compare_two_hdf5_files(
                 filepath_1 = all_files[i],
                 filepath_2 = all_files[j],
             )
