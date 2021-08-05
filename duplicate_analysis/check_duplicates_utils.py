@@ -1,6 +1,7 @@
 import numpy as np
 import h5py as h5
 from hashlib import sha256
+import os
 
 
 def get_all_hdf5_files_in_a_directory(dir_path):
@@ -12,7 +13,7 @@ def get_all_hdf5_files_in_a_directory(dir_path):
                 all_files.append(object_path)
 
     return all_files
-    
+
 
 def get_common_keys(file_1, file_2):
     file_1_keys = set(file_1.keys())
