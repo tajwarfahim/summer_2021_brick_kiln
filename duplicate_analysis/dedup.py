@@ -5,8 +5,18 @@ import h5py as h5
 import argparse
 
 # imports from our code
-import sys
-from .check_duplicates_utils import *
+from .check_duplicates_utils import (
+    compare_two_hdf5_files_numpy,
+    compare_two_hdf5_files_hashing,
+    remove_duplicates
+)
+
+from ..utils.hdf5_utils import (
+    get_all_hdf5_files_in_a_directory,
+    get_common_keys,
+    open_hdf5_file,
+    retrieve_datasets_from_hdf5_file
+)
 
 
 def parse_script_arguments():
