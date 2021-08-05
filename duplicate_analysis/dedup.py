@@ -11,6 +11,7 @@ from .check_duplicates_utils import *
 
 def parse_script_arguments():
     parser = argparse.ArgumentParser()
+    parser.add_argument("--check_single_directory", action="store_true")
     parser.add_argument("--target_dir", type=str)
     args = parser.parse_args()
 
@@ -35,7 +36,9 @@ def check_duplicates_in_same_directory(target_dir):
 
 def run_script():
     args = parse_script_arguments()
-    check_duplicates_in_same_directory(target_dir=args.target_dir)
+    
+    if parser.check_single_directory:
+        check_duplicates_in_same_directory(target_dir=args.target_dir)
 
 if __name__ == "__main__":
     run_script()
