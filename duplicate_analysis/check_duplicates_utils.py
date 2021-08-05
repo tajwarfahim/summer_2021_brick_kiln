@@ -125,7 +125,7 @@ def hash_datasets_of_a_single_file(num_datapoints, datasets):
 
 def compare_two_hdf5_files_numpy(filepath_1, filepath_2):
     print("\n Comparing files using numpy array checks.\n")
-    
+
     file_1 = open_hdf5_file(filepath_1)
     file_2 = open_hdf5_file(filepath_2)
 
@@ -212,14 +212,11 @@ def compare_two_hdf5_files_hashing(filepath_1, filepath_2):
     return datasets_1, datasets_2, duplicates_between_files
 
 
-def remove_duplicates(target_path, source_path, dedupped_file_path, remove_duplicates):
+def remove_duplicates(target_path, source_path, dedupped_file_path):
     datasets_target, datasets_source, duplicates_between_files = compare_two_hdf5_files_numpy(
         filepath_1=target_path,
         filepath_2=source_path,
     )
-
-    if not remove_duplicates:
-        return
 
     dedupped_hdf5_file = h5.File(dedupped_file_path, 'w')
     for key in datasets_target:

@@ -64,12 +64,18 @@ def compare_two_different_directories(source_dir, target_dir, dedupped_dir, shou
             else:
                 target_path = dedupped_file_path
 
-            remove_duplicates(
-                target_path=target_path,
-                source_path=source_files[j],
-                dedupped_file_path=target_files[i],
-                remove_duplicates=should_remove_duplicates,
-            )
+            if not should_remove_duplicates:
+                compare_two_hdf5_files_numpy(
+                    target_path=target_path,
+                    source_path=source_files[j],
+                )
+
+            else:
+                remove_duplicates(
+                    target_path=target_path,
+                    source_path=source_files[j],
+                    dedupped_file_path=target_files[i],
+                )   
 
 
 def run_script():
