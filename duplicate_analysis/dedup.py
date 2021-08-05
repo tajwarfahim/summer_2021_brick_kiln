@@ -36,8 +36,8 @@ def check_duplicates_in_same_directory(target_dir):
 
 def run_script():
     args = parse_script_arguments()
-    
-    if parser.check_single_directory:
+
+    if args.check_single_directory:
         check_duplicates_in_same_directory(target_dir=args.target_dir)
 
 if __name__ == "__main__":
