@@ -124,6 +124,8 @@ def hash_datasets_of_a_single_file(num_datapoints, datasets):
 
 
 def compare_two_hdf5_files_numpy(filepath_1, filepath_2):
+    print("\n Comparing files using numpy array checks.\n")
+    
     file_1 = open_hdf5_file(filepath_1)
     file_2 = open_hdf5_file(filepath_2)
 
@@ -167,6 +169,8 @@ def compare_two_hdf5_files_numpy(filepath_1, filepath_2):
 
 
 def compare_two_hdf5_files_hashing(filepath_1, filepath_2):
+    print("\n Comparing files using hashing.\n")
+
     file_1 = open_hdf5_file(filepath_1)
     file_2 = open_hdf5_file(filepath_2)
 
