@@ -63,6 +63,7 @@ def compare_two_different_directories(source_dir, target_dir, dedupped_dir):
                 target_path=target_path,
                 source_path=source_files[j],
                 dedupped_file_path=target_files[i],
+                remove_duplicates=False
             )
 
 
@@ -77,7 +78,6 @@ def run_script():
             source_dir=args.source_dir,
             target_dir=args.target_dir,
             dedupped_dir=args.dedupped_dir,
-            remove_duplicates=False
         )
 
 if __name__ == "__main__":
