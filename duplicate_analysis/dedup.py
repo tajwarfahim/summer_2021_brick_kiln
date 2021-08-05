@@ -57,25 +57,25 @@ def compare_two_different_directories(source_dir, target_dir, dedupped_dir, shou
     for i in range(len(target_files)):
         target_file_name = target_files[i].split("/")[-1]
         dedupped_file_path = os.path.join(dedupped_dir, target_file_name)
-
         for j in range(len(source_files)):
-            if j == 0:
-                target_path = target_files[i]
-            else:
-                target_path = dedupped_file_path
+            if target_files[i] != source_files[j]:
+                if j == 0:
+                    target_path = target_files[i]
+                else:
+                    target_path = dedupped_file_path
 
-            if not should_remove_duplicates:
-                compare_two_hdf5_files_numpy(
-                    filepath_1=target_path,
-                    filepath_2=source_files[j],
-                )
+                if not should_remove_duplicates:
+                    compare_two_hdf5_files_numpy(
+                        filepath_1=target_path,
+                        filepath_2=source_files[j],
+                    )
 
-            else:
-                remove_duplicates(
-                    target_path=target_path,
-                    source_path=source_files[j],
-                    dedupped_file_path=dedupped_file_path,
-                )
+                else:
+                    remove_duplicates(
+                        target_path=target_path,
+                        source_path=source_files[j],
+                        dedupped_file_path=dedupped_file_path,
+                    )
 
 
 def run_script():
