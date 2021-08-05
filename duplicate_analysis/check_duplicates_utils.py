@@ -1,9 +1,18 @@
 import numpy as np
-import pandas as pd
 import h5py as h5
-import argparse as ap
 from hashlib import sha256
 
+
+def get_all_hdf5_files_in_a_directory(dir_path):
+    all_files = []
+    if os.path.isdir(dir_path):
+        for f in os.listdir(dir_path):
+            object_path = os.path.join(dir_path, f)
+            if os.path.isfile(object_path) and h5.is_hdf5(object_path):
+                all_files.append(object_path)
+
+    return all_files
+    
 
 def get_common_keys(file_1, file_2):
     file_1_keys = set(file_1.keys())
@@ -80,33 +89,94 @@ def debug_hashing(filepath):
         print("Changing RGB value slightly did change the hash function.")
 
 
-def compare_images_in_two_hdf5_files(filepath_1, filepath_2):
-    file_1 = open_hdf5_file(filepath = filepath_1)
-    file_2 = open_hdf5_file(filepath = filepath_2)
+def retrieve_datasets_from_hdf5_file(hdf5_file, keys):
+    datasets = {}
+    len = None
+    for key in keys:
+        datasets[key] = np.array(hdf5_file[key])
+        if len is None:
+            len = datasets[key].shape[0]
+        elif len != datasets[key].shape[0]:
+            raise ValueError("Different datasets in same HDF5 file have different shapes.")
 
-    assert "images" in file_1.keys() and "images" in file_2.keys()
-    images_1 = np.array(file_1["images"])
-    images_2 = np.array(file_2["images"])
+    return len, datasets
 
-    cache_1 = set()
-    for index in range(images_1.shape[0]):
-        image = images_1[index]
-        hash_string = sha256(image).hexdigest()
-        if hash_string in cache_1:
-            print("there are duplicate images in the first hdf5 file.")
-        cache_1.add(hash_string)
 
-    cache_2 = set()
-    for index in range(images_2.shape[0]):
-        image = images_2[index]
-        hash_string = sha256(image).hexdigest()
-        if hash_string in cache_2:
-            print("there are duplicate images in the first hdf5 file.")
-        cache_2.add(hash_string)
+def hash_datasets_of_a_single_file(num_datapoints, datasets):
+    hash_strings = []
+    for index in range(num_datapoints):
+        encoder = None
+        for key in datasets:
+            data_point = datasets[key][index]
+            if encoder is None:
+                encoder = sha256(data_point)
+            else:
+                encoder.update(data_point)
 
-    num_duplicates = 0
-    for hash_string in cache_1:
-        if hash_string in cache_2:
-            num_duplicates += 1
+        hash_strings.append(encoder.hexdigest())
 
-    print("Number of duplicates between 1st and 2nd file:", num_duplicates)
+    if len(set(hash_strings)) != len(hash_strings):
+        raise ValueError("There are duplicates within a single file.")
+
+    return hash_strings
+
+
+def compare_two_hdf5_files(filepath_1, filepath_2):
+    file_1 = open_hdf5_file(filepath_1)
+    file_2 = open_hdf5_file(filepath_2)
+
+    common_keys = get_common_keys(file_1 = file_1, file_2 = file_2)
+    print("\n Common keys between two files: ", common_keys, "\n")
+
+    num_datapoints_1, datasets_1 = retrieve_datasets_from_hdf5_file(
+        hdf5_file = file_1, keys = common_keys
+    )
+    num_datapoints_2, datasets_2 = retrieve_datasets_from_hdf5_file(
+        hdf5_file = file_2, keys = common_keys
+    )
+
+    file_1.close()
+    file_2.close()
+
+    hash_strings_1 = hash_datasets_of_a_single_file(
+        num_datapoints = num_datapoints_1, datasets = datasets_1
+    )
+
+    hash_strings_2 = hash_datasets_of_a_single_file(
+        num_datapoints = num_datapoints_2, datasets = datasets_2
+    )
+
+    duplicates_between_files = []
+    for i in range(num_datapoints_1):
+        for j in range(num_datapoints_2):
+            if hash_strings_1[i] == hash_strings_2[j]:
+                duplicates_between_files.append(i)
+
+    print(
+        "\mThere have been ", len(duplicates_between_files),
+        " duplicates between the two files.\n"
+    )
+
+    return datasets_1, datasets_2, duplicates_between_files
+
+
+def remove_duplicates(target_path, source_path, dedupped_file_path):
+    datasets_target, datasets_source, duplicates_between_files = compare_two_hdf5_files(
+        filepath_1=filepath_1,
+        filepath_2=filepath_2,
+    )
+
+    dedupped_hdf5_file = h5.File(dedupped_file_path, 'w')
+    for key in datasets_target:
+        particular_dataset = datasets_target[key]
+        assert isinstance(particular_dataset, np.ndarray)
+
+        new_dataset = []
+        for i in range(particular_dataset.shape[0]):
+            if i not in duplicates_between_files:
+                new_dataset.append(particular_dataset[i])
+
+        new_dataset = np.array(new_dataset)
+        dedupped_hdf5_file.create_dataset(key, data=new_dataset)
+
+    dedupped_hdf5_file.close()
