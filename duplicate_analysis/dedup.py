@@ -77,6 +77,7 @@ def run_script():
             source_dir=args.source_dir,
             target_dir=args.target_dir,
             dedupped_dir=args.dedupped_dir,
+            remove_duplicates=False
         )
 
 if __name__ == "__main__":
