@@ -12,6 +12,7 @@ def get_all_hdf5_files_in_a_directory(dir_path):
             if os.path.isfile(object_path) and h5.is_hdf5(object_path):
                 all_files.append(object_path)
 
+    all_files.sort()
     return all_files
 
 
