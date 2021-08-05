@@ -140,6 +140,9 @@ def compare_two_hdf5_files(filepath_1, filepath_2):
     file_1.close()
     file_2.close()
 
+    print("\n Number of datapoints in 1st file: ", num_datapoints_1)
+    print("Number of datapoints in 2nd file: ", num_datapoints_2, "\n")
+
     hash_strings_1 = hash_datasets_of_a_single_file(
         num_datapoints = num_datapoints_1, datasets = datasets_1
     )
