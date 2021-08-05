@@ -74,7 +74,7 @@ def compare_two_different_directories(source_dir, target_dir, dedupped_dir, shou
                 remove_duplicates(
                     target_path=target_path,
                     source_path=source_files[j],
-                    dedupped_file_path=target_files[i],
+                    dedupped_file_path=dedupped_file_path,
                 )
 
 
