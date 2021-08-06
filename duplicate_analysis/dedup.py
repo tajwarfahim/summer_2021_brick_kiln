@@ -3,24 +3,30 @@ import os
 import numpy as np
 import h5py as h5
 import argparse
+import configargparse
 
 # imports from our code
 from .check_duplicates_utils import (
     compare_two_hdf5_files_numpy,
     compare_two_hdf5_files_hashing,
-    remove_duplicates
+    remove_duplicates,
 )
 
 from ..utils.hdf5_utils import (
     get_all_hdf5_files_in_a_directory,
     get_common_keys,
     open_hdf5_file,
-    retrieve_datasets_from_hdf5_file
+    retrieve_datasets_from_hdf5_file,
 )
 
 
 def parse_script_arguments():
     parser = argparse.ArgumentParser()
+    parser = configargparse.ArgumentParser(
+        config_file_parser_class=configargparse.YAMLConfigFileParser,
+        parents=[parser],
+        add_help=False,
+    )
 
     # task option
     parser.add_argument("--check_single_directory", action="store_true")
@@ -46,12 +52,14 @@ def check_duplicates_in_same_directory(target_dir):
     for i in range(len(all_files) - 1):
         for j in range(i + 1, len(all_files)):
             compare_two_hdf5_files(
-                filepath_1 = all_files[i],
-                filepath_2 = all_files[j],
+                filepath_1=all_files[i],
+                filepath_2=all_files[j],
             )
 
 
-def compare_two_different_directories(source_dir, target_dir, dedupped_dir, should_remove_duplicates):
+def compare_two_different_directories(
+    source_dir, target_dir, dedupped_dir, should_remove_duplicates
+):
     target_files = get_all_hdf5_files_in_a_directory(dir_path=target_dir)
     source_files = get_all_hdf5_files_in_a_directory(dir_path=source_dir)
 
@@ -101,6 +109,7 @@ def run_script():
             dedupped_dir=args.dedupped_dir,
             should_remove_duplicates=args.remove_duplicates,
         )
+
 
 if __name__ == "__main__":
     run_script()

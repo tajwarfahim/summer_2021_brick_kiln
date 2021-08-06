@@ -30,7 +30,7 @@ def open_hdf5_file(filepath):
         raise ValueError(filepath + " is not a valid hdf5 file.")
     print("File path: ", filepath)
 
-    file = h5.File(filepath, 'r')
+    file = h5.File(filepath, "r")
     return file
 
 

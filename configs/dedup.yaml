@@ -1,0 +1,9 @@
+# task configuration
+check_single_directory: False
+compare_two_directories: True
+remove_duplicates: True
+
+# file name configuration
+target_dir: "/atlas/u/jihyeonlee/handlabeling/delta-1/nina"
+source_dir: "/atlas/u/jihyeonlee/handlabeling/delta-1/jihyeon"
+dedupped_dir: "/atlas/u/tajwar/handlabelling/dedupped_files/delta-1/"
