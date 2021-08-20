@@ -38,7 +38,7 @@ def retrieve_images(hdf5_filepath):
         raise ValueError("Given HDF5 file does not have correct format.")
 
     # retrieve images and close file
-    images = hdf5_file["images"]
+    images = np.array(hdf5_file["images"])
     hdf5_file.close()
 
     # reorder axes to 1000, 64, 64, 3
