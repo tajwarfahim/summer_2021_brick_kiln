@@ -4,6 +4,7 @@ import imageio
 import argparse
 import configargparse
 import os
+import numpy as np
 
 # import from our scripts
 from ..utils.hdf5_utils import open_hdf5_file
@@ -25,6 +26,8 @@ def parse_script_arguments():
     parser.add_argument("--image_dir", type=str)
 
     args = parser.parse_args()
+
+    print(parser.format_values())
 
     return args
 
