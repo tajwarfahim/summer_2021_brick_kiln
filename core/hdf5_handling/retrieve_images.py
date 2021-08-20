@@ -7,7 +7,10 @@ import os
 import numpy as np
 
 # import from our scripts
-from ..utils.hdf5_utils import open_hdf5_file
+from ..utils.hdf5_utils import (
+    open_hdf5_file,
+    get_all_hdf5_files_from_regex,
+)
 
 
 def parse_script_arguments():
@@ -22,7 +25,7 @@ def parse_script_arguments():
     parser.add_argument("--config", is_config_file=True)
 
     # paths to files and directories
-    parser.add_argument("--hdf5_filepath", type=str)
+    parser.add_argument("--regex", type=str)
     parser.add_argument("--image_dir", type=str)
 
     args = parser.parse_args()
@@ -32,14 +35,9 @@ def parse_script_arguments():
     return args
 
 
-def retrieve_images(hdf5_filepath):
-    hdf5_file = open_hdf5_file(filepath=hdf5_filepath)
-    if "images" not in hdf5_file.keys():
-        raise ValueError("Given HDF5 file does not have correct format.")
-
+def retrieve_images(hdf5_file):
     # retrieve images and close file
     images = np.array(hdf5_file["images"])
-    hdf5_file.close()
 
     # reorder axes to 1000, 64, 64, 3
     images = np.transpose(images[:, 1:4, :, :], axes=[0, 2, 3, 1])
@@ -51,18 +49,19 @@ def retrieve_images(hdf5_filepath):
     return images
 
 
-def save_images_as_png(images, image_dir):
+def save_images_as_png(images, image_dir, sub_dir):
     if not isinstance(images, np.ndarray):
         raise ValueError("Given images array does not have proper format.")
     if len(images.shape) != 4:
         raise ValueError("Given images array does not have proper shape.")
 
+    image_dir = os.path.join(image_dir, sub_dir)
     if not os.path.isdir(image_dir):
         os.makedirs(image_dir)
 
     for img_indx in range(images.shape[0]):
         # create image path
-        img_path = os.path.join(image_dir, f"image_{img_indx}.jpeg")
+        img_path = os.path.join(image_dir, sub_dir + "_" + f"image_{img_indx}.jpeg")
 
         # retreive images
         img = images[img_indx]
@@ -74,8 +73,19 @@ def save_images_as_png(images, image_dir):
 
 def run_script():
     args = parse_script_arguments()
-    images = retrieve_images(hdf5_filepath=args.hdf5_filepath)
-    save_images_as_png(images=images, image_dir=args.image_dir)
+
+    hdf5_file_names = get_all_hdf5_files_from_regex(regex=args.regex)
+
+    for i in range(len(hdf5_file_names)):
+        hdf5_file = open_hdf5_file(filepath=hdf5_file_names[i])
+        images = retrieve_images(hdf5_file=hdf5_file)
+        hdf5_file.close()
+
+        main_file_name = hdf5_file_names[i].split("/")[-1]
+        assert main_file_name.endswith(".hdf5")
+        sub_dir = main_file_name[0 : len(main_file_name) - 5]
+
+        save_images_as_png(images=images, image_dir=args.image_dir, sub_dir=sub_dir)
 
 
 if __name__ == "__main__":
