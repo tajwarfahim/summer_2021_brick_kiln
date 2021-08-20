@@ -1,9 +1,16 @@
 # task configuration
+check_regex: True
 check_single_directory: False
-compare_two_directories: True
-remove_duplicates: True
+compare_two_directories: False
+remove_duplicates: False
 
 # file name configuration
-target_dir: "/atlas/u/jihyeonlee/handlabeling/delta-1/nina"
-source_dir: "/atlas/u/jihyeonlee/handlabeling/delta-1/jihyeon"
-dedupped_dir: "/atlas/u/tajwar/handlabelling/dedupped_files/delta-1/"
+target_dir: /atlas/u/jihyeonlee/handlabeling/delta-1/nina
+source_dir: /atlas/u/jihyeonlee/handlabeling/delta-1/jihyeon
+dedupped_dir: /Users/fahimtajwar/Academics/summer_2021_brick_kiln/dedupped_dedupped/
+
+# regex
+regex: /Users/fahimtajwar/Academics/summer_2021_brick_kiln/**/*.hdf5
+
+# number of chunks
+num_chunks: 5

@@ -34,7 +34,7 @@ def get_common_keys(list_of_files):
     common_keys = set(list_of_files[0].keys())
     for i in range(1, len(list_of_files)):
         set_of_keys = set(list_of_files[i].keys())
-        common_keys = running_intersection.intersection(set_of_keys)
+        common_keys = common_keys.intersection(set_of_keys)
 
     return common_keys
 

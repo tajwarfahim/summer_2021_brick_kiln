@@ -237,7 +237,7 @@ def remove_duplicates_from_list_of_files(regex, save_dir, num_chunks):
         file.close()
 
     for key in common_keys:
-        dedupped_datasets[key] = np.concatenate(dedupped_datasets[key])
+        dedupped_datasets[key] = np.array(dedupped_datasets[key])
         print("key:", key, " shape unique elements: ", dedupped_datasets[key].shape)
 
     print("\nNumber of total elements (including duplicates): ", num_total_elements, "\n")
@@ -261,7 +261,7 @@ def divide_and_save_dataset(datasets, save_dir, num_chunks):
     assert num_chunks < num_datapoints
     num_elements_per_chunk = int(num_datapoints / num_chunks)
 
-    assert save_dir is not None and isinstance(str, save_dir)
+    assert save_dir is not None and isinstance(save_dir, str)
     if not os.path.isdir(save_dir):
         os.makedirs(save_dir)
 

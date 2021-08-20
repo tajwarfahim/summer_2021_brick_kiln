@@ -29,6 +29,9 @@ def parse_script_arguments():
         add_help=False,
     )
 
+    # config argparse
+    parser.add_argument("--config", is_config_file=True)
+
     # task option
     parser.add_argument("--check_regex", action="store_true")
     parser.add_argument("--check_single_directory", action="store_true")
