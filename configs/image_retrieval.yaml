@@ -1,3 +1,3 @@
 # paths to files and directories
-hdf5_filepath: "/Users/fahimtajwar/Academics/summer_2021_brick_kiln/files/example_1_new.hdf5"
-image_dir: "/Users/fahimtajwar/Academics/summer_2021_brick_kiln/files/images_from_example_1_new/"
+hdf5_filepath: /Users/fahimtajwar/Academics/summer_2021_brick_kiln/files/examples_1_new.hdf5
+image_dir: /Users/fahimtajwar/Academics/summer_2021_brick_kiln/files/images_from_example_1_new/
