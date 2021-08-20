@@ -1,26 +1,40 @@
 import numpy as np
 import h5py as h5
 import os
+import glob
 
 
 def get_all_hdf5_files_in_a_directory(dir_path):
-    all_files = []
+    valid_files = []
     if os.path.isdir(dir_path):
         for f in os.listdir(dir_path):
             object_path = os.path.join(dir_path, f)
             if os.path.isfile(object_path) and h5.is_hdf5(object_path):
-                all_files.append(object_path)
+                valid_files.append(object_path)
 
-    all_files.sort()
-    return all_files
+    valid_files.sort()
+    return valid_files
 
 
-def get_common_keys(file_1, file_2):
-    file_1_keys = set(file_1.keys())
-    common_keys = []
-    for file_2_key in file_2.keys():
-        if file_2_key in file_1_keys:
-            common_keys.append(file_2_key)
+def get_all_hdf5_files_from_regex(regex):
+    valid_files = []
+    possible_files = glob.glob(regex, recursive=True)
+    for file_name in possible_files:
+        if os.path.isfile(file_name) and h5.is_hdf5(file_name):
+            valid_files.append(file_name)
+
+    valid_files.sort()
+    return valid_files
+
+
+def get_common_keys(list_of_files):
+    if len(list_of_files) == 0:
+        return set()
+
+    common_keys = set(list_of_files[0].keys())
+    for i in range(1, len(list_of_files)):
+        set_of_keys = set(list_of_files[i].keys())
+        common_keys = running_intersection.intersection(set_of_keys)
 
     return common_keys
 

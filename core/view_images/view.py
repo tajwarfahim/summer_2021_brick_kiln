@@ -58,9 +58,7 @@ def load_data(hdf5_filename, indexes):
     # Read in the current data
     with h5py.File(hdf5_filename, "r") as f:
         print(f.keys())
-        images = np.transpose(
-            f["images"][:, 1:4, :, :], axes=[0, 2, 3, 1]
-        )  # reorder axes to 1000, 64, 64, 3
+        images = np.transpose(f["images"][:, 1:4, :, :], axes=[0, 2, 3, 1])  # reorder axes to 1000, 64, 64, 3
         images = images[:, :, :, ::-1]  # B, G, R --> R, G, B
         # Normalize values to be between 0 and 255
         # images *= 255. / (0.8 * np.max(images))
