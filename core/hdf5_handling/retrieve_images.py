@@ -17,6 +17,9 @@ def parse_script_arguments():
         add_help=False,
     )
 
+    # config argparse
+    parser.add_argument("--config", is_config_file=True)
+
     # paths to files and directories
     parser.add_argument("--hdf5_filepath", type=str)
     parser.add_argument("--image_dir", type=str)
