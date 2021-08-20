@@ -187,6 +187,7 @@ def remove_duplicates(target_path, source_path, dedupped_file_path):
     print("\nDedupped file path: ", dedupped_file_path)
 
     dedupped_hdf5_file = h5.File(dedupped_file_path, "w")
+    
     for key in datasets_target:
         particular_dataset = datasets_target[key]
         assert isinstance(particular_dataset, np.ndarray)

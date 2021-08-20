@@ -62,8 +62,9 @@ def compare_two_different_directories(
 ):
     target_files = get_all_hdf5_files_in_a_directory(dir_path=target_dir)
     source_files = get_all_hdf5_files_in_a_directory(dir_path=source_dir)
-
-    if not os.path.isdir(dedupped_dir):
+    if dedupped_dir is None:
+        dedupped_dir = target_dir
+    elif not os.path.isdir(dedupped_dir):
         os.makedirs(dedupped_dir)
 
     print("\n Target directory:", target_dir)
@@ -82,17 +83,17 @@ def compare_two_different_directories(
                 else:
                     target_path = dedupped_file_path
 
-                if not should_remove_duplicates:
-                    compare_two_hdf5_files_numpy(
-                        filepath_1=target_path,
-                        filepath_2=source_files[j],
-                    )
-
-                else:
+                if should_remove_duplicates:
                     remove_duplicates(
                         target_path=target_path,
                         source_path=source_files[j],
                         dedupped_file_path=dedupped_file_path,
+                    )
+
+                else:
+                    compare_two_hdf5_files_numpy(
+                        filepath_1=target_path,
+                        filepath_2=source_files[j],
                     )
 
 
