@@ -211,7 +211,10 @@ def remove_duplicates_from_list_of_files(regex, save_dir, chunk_size):
     hash_of_datasets = set()
     num_total_elements = 0
 
-    for file in hdf5_files:
+    for i in range(len(hdf5_files)):
+        print("Index of file being processed: ", i)
+
+        file = hdf5_files[i]
         num_datapoints = get_num_datapoints(datasets=file)
         dsets = {}
         for key in common_keys:
