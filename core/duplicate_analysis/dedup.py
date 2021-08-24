@@ -45,7 +45,7 @@ def parse_script_arguments():
     parser.add_argument("--regex", type=str)
 
     # number of chunks
-    parser.add_argument("--num_chunks", type=int)
+    parser.add_argument("--chunk_size", type=int)
 
     args = parser.parse_args()
     print(parser.format_values())
@@ -113,7 +113,7 @@ def run_script():
         remove_duplicates_from_list_of_files(
             regex=args.regex,
             save_dir=args.dedupped_dir,
-            num_chunks=args.num_chunks,
+            chunk_size=args.chunk_size,
         )
 
     elif args.check_single_directory:

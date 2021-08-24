@@ -4,6 +4,7 @@ from hashlib import sha256
 import os
 from collections import defaultdict
 import h5py as h5
+import math
 
 # import from our packages
 from ..utils.hdf5_utils import (
@@ -194,7 +195,7 @@ def remove_duplicates_between_two_directories(target_path, source_path, dedupped
     dedupped_hdf5_file.close()
 
 
-def remove_duplicates_from_list_of_files(regex, save_dir, num_chunks):
+def remove_duplicates_from_list_of_files(regex, save_dir, chunk_size):
     hdf5_file_names = get_all_hdf5_files_from_regex(regex=regex)
     print("\nFiles we will be removing duplicates from: ")
     print(hdf5_file_names, "\n")
@@ -242,7 +243,11 @@ def remove_duplicates_from_list_of_files(regex, save_dir, num_chunks):
 
     print("\nNumber of total elements (including duplicates): ", num_total_elements, "\n")
 
-    divide_and_save_dataset(datasets=dedupped_datasets, save_dir=save_dir, num_chunks=num_chunks)
+    divide_and_save_dataset(
+        datasets=dedupped_datasets,
+        save_dir=save_dir,
+        chunk_size=chunk_size
+    )
 
 
 def get_num_datapoints(datasets):
@@ -256,10 +261,14 @@ def get_num_datapoints(datasets):
     return num_datapoints
 
 
-def divide_and_save_dataset(datasets, save_dir, num_chunks):
+def divide_and_save_dataset(datasets, save_dir, chunk_size):
     num_datapoints = get_num_datapoints(datasets=datasets)
-    assert num_chunks < num_datapoints
-    num_elements_per_chunk = int(num_datapoints / num_chunks)
+
+    if chunk_size == 0:
+        chunk_size = int(input("Enter the size of each individual chunk:"))
+
+    assert chunk_size <= num_datapoints and chunk_size > 0
+    num_chunks = math.ceil(num_datapoints / chunk_size)
 
     assert save_dir is not None and isinstance(save_dir, str)
     if not os.path.isdir(save_dir):
@@ -271,7 +280,7 @@ def divide_and_save_dataset(datasets, save_dir, num_chunks):
         file = h5.File(file_path, "w")
 
         for key in datasets:
-            chunk_dataset = datasets[key][i * num_elements_per_chunk : (i + 1) * num_elements_per_chunk]
+            chunk_dataset = datasets[key][i * chunk_size : (i + 1) * chunk_size]
             file.create_dataset(key, data=chunk_dataset)
 
         file.close()
