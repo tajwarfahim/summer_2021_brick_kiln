@@ -265,7 +265,7 @@ def divide_and_save_dataset(datasets, save_dir, chunk_size):
     num_datapoints = get_num_datapoints(datasets=datasets)
 
     if chunk_size == 0:
-        chunk_size = int(input("Enter the size of each individual chunk:"))
+        chunk_size = int(input("Enter the size of each individual chunk: "))
 
     assert chunk_size <= num_datapoints and chunk_size > 0
     num_chunks = math.ceil(num_datapoints / chunk_size)
