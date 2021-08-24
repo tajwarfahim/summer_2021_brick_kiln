@@ -197,9 +197,6 @@ def remove_duplicates_between_two_directories(target_path, source_path, dedupped
 
 def remove_duplicates_from_list_of_files(regex, save_dir, chunk_size):
     hdf5_file_names = get_all_hdf5_files_from_regex(regex=regex)
-    print("\nFiles we will be removing duplicates from: ")
-    print(hdf5_file_names, "\n")
-
     hdf5_files = []
     for file_name in hdf5_file_names:
         hdf5_files.append(open_hdf5_file(file_name))
