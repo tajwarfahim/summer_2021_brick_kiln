@@ -1,11 +1,11 @@
 # task configuration
-check_single_regex: True
-check_double_regex: False
+check_single_regex: False
+check_double_regex: True
 
 # file name configuration
-# target_dir: /atlas/u/jihyeonlee/handlabeling/delta-1/nina
-# source_dir: /atlas/u/jihyeonlee/handlabeling/delta-1/jihyeon
-dedupped_dir: /atlas/u/tajwar/dedupped_datasets/positives/
+target_dir: /atlas/u/tajwar/dedupped_datasets/positives/
+source_dir: /atlas/u/tajwar/dedupped_datasets/delta+1/
+dedupped_dir: /atlas/u/tajwar/dedupped_datasets/positives_dedupped/
 
 # regex
 regex: /atlas/u/tajwar/data_files/no_conflicts/positives/**/*.hdf5
