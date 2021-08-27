@@ -5,12 +5,12 @@ compare_two_directories: False
 remove_duplicates: False
 
 # file name configuration
-target_dir: /atlas/u/jihyeonlee/handlabeling/delta-1/nina
-source_dir: /atlas/u/jihyeonlee/handlabeling/delta-1/jihyeon
-dedupped_dir: /atlas/u/tajwar/dedupped_datasets/negative/
+# target_dir: /atlas/u/jihyeonlee/handlabeling/delta-1/nina
+# source_dir: /atlas/u/jihyeonlee/handlabeling/delta-1/jihyeon
+dedupped_dir: /atlas/u/tajwar/dedupped_datasets/positives/
 
 # regex
-regex: /atlas/u/mhelabd/data/kiln-scaling/labelled_bangladesh_2019_2020/negative/**/*.hdf5
+regex: /atlas/u/tajwar/data_files/no_conflicts/positives/**/*.hdf5
 
 # size of each chunk
 chunk_size: 0
