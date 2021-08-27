@@ -7,10 +7,10 @@ remove_duplicates: False
 # file name configuration
 # target_dir: /atlas/u/jihyeonlee/handlabeling/delta-1/nina
 # source_dir: /atlas/u/jihyeonlee/handlabeling/delta-1/jihyeon
-dedupped_dir: /atlas/u/tajwar/dedupped_datasets/delta+1/
+dedupped_dir: /atlas/u/tajwar/dedupped_datasets/delta-1/
 
 # regex
-regex: /atlas/u/tajwar/data_files/no_conflicts/delta+1/**/*.hdf5
+regex: /atlas/u/tajwar/data_files/no_conflicts/delta-1/**/*.hdf5
 
 # size of each chunk
 chunk_size: 0
