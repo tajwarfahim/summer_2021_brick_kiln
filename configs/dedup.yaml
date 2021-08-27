@@ -1,8 +1,6 @@
 # task configuration
-check_regex: False
-check_single_directory: False
-compare_two_directories: True
-remove_duplicates: True
+check_single_regex: True
+check_double_regex: False
 
 # file name configuration
 # target_dir: /atlas/u/jihyeonlee/handlabeling/delta-1/nina
