@@ -9,7 +9,7 @@ import numpy as np
 # import from our scripts
 from ..utils.hdf5_utils import (
     open_hdf5_file,
-    get_all_hdf5_files_from_regex,
+    get_all_hdf5_filenames_from_regex,
 )
 
 
@@ -74,7 +74,7 @@ def save_images_as_png(images, image_dir, sub_dir):
 def run_script():
     args = parse_script_arguments()
 
-    hdf5_file_names = get_all_hdf5_files_from_regex(regex=args.regex)
+    hdf5_file_names = get_all_hdf5_filenames_from_regex(regex=args.regex, verbose=True)
 
     for i in range(len(hdf5_file_names)):
         hdf5_file = open_hdf5_file(filepath=hdf5_file_names[i])

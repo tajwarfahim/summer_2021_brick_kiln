@@ -7,17 +7,8 @@ import configargparse
 
 # imports from our code
 from .check_duplicates_utils import (
-    compare_two_hdf5_files_numpy,
-    compare_two_hdf5_files_hashing,
-    remove_duplicates_between_two_directories,
-    remove_duplicates_from_list_of_files,
-)
-
-from ..utils.hdf5_utils import (
-    get_all_hdf5_files_in_a_directory,
-    get_common_keys,
-    open_hdf5_file,
-    retrieve_datasets_from_hdf5_file,
+    remove_duplicates_between_two_list_of_files,
+    remove_duplicates_from_single_list_of_files,
 )
 
 
@@ -33,14 +24,12 @@ def parse_script_arguments():
     parser.add_argument("--config", is_config_file=True)
 
     # task option
-    parser.add_argument("--check_regex", action="store_true")
-    parser.add_argument("--check_single_directory", action="store_true")
-    parser.add_argument("--compare_two_directories", action="store_true")
-    parser.add_argument("--remove_duplicates", action="store_true")
+    parser.add_argument("--check_single_regex", action="store_true")
+    parser.add_argument("--check_double_regex", action="store_true")
 
     # file path option
-    parser.add_argument("--target_dir", type=str)
-    parser.add_argument("--source_dir", type=str)
+    parser.add_argument("--target_regex", type=str)
+    parser.add_argument("--source_regex", type=str)
     parser.add_argument("--dedupped_dir", type=str)
     parser.add_argument("--regex", type=str)
 
@@ -53,78 +42,29 @@ def parse_script_arguments():
     return args
 
 
-def check_duplicates_in_same_directory(target_dir):
-    all_files = get_all_hdf5_files_in_a_directory(dir_path=target_dir)
-
-    print("\n Directory:", target_dir)
-    print("Dataset files in directory: ", all_files)
-    print("Checking if there are duplicates between any two of these files.\n")
-
-    for i in range(len(all_files) - 1):
-        for j in range(i + 1, len(all_files)):
-            compare_two_hdf5_files_numpy(
-                filepath_1=all_files[i],
-                filepath_2=all_files[j],
-            )
-
-
-def compare_two_different_directories(source_dir, target_dir, dedupped_dir, should_remove_duplicates):
-    target_files = get_all_hdf5_files_in_a_directory(dir_path=target_dir)
-    source_files = get_all_hdf5_files_in_a_directory(dir_path=source_dir)
-    if dedupped_dir is None:
-        dedupped_dir = target_dir
-    elif not os.path.isdir(dedupped_dir):
-        os.makedirs(dedupped_dir)
-
-    print("\n Target directory:", target_dir)
-    print("Dataset files in directory: ", target_files)
-    print("\nSource directory:", source_dir)
-    print("Dataset files in directory: ", source_files)
-    print("\nChecking if there are duplicates between any two of these files.\n")
-
-    for i in range(len(target_files)):
-        target_file_name = target_files[i].split("/")[-1]
-        dedupped_file_path = os.path.join(dedupped_dir, target_file_name)
-        for j in range(len(source_files)):
-            if target_files[i] != source_files[j]:
-                if j == 0:
-                    target_path = target_files[i]
-                else:
-                    target_path = dedupped_file_path
-
-                if should_remove_duplicates:
-                    remove_duplicates_between_two_directories(
-                        target_path=target_path,
-                        source_path=source_files[j],
-                        dedupped_file_path=dedupped_file_path,
-                    )
-
-                else:
-                    compare_two_hdf5_files_numpy(
-                        filepath_1=target_path,
-                        filepath_2=source_files[j],
-                    )
+def validate_script_arguments(args):
+    # at least one option is true
+    assert args.check_single_regex or args.check_double_regex
+    # but not both options
+    assert not args.check_single_regex or not args.check_double_regex
 
 
 def run_script():
     args = parse_script_arguments()
+    validate_script_arguments(args=args)
 
-    if args.check_regex:
-        remove_duplicates_from_list_of_files(
+    if args.check_single_regex:
+        remove_duplicates_from_single_list_of_files(
             regex=args.regex,
             save_dir=args.dedupped_dir,
             chunk_size=args.chunk_size,
         )
 
-    elif args.check_single_directory:
-        check_duplicates_in_same_directory(target_dir=args.target_dir)
-
-    elif args.compare_two_directories:
-        compare_two_different_directories(
-            source_dir=args.source_dir,
-            target_dir=args.target_dir,
-            dedupped_dir=args.dedupped_dir,
-            should_remove_duplicates=args.remove_duplicates,
+    else:
+        remove_duplicates_between_two_list_of_files(
+            source_regex=args.source_regex,
+            target_regex=args.target_regex,
+            save_dir=args.dedupped_dir,
         )
 
 

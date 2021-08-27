@@ -16,7 +16,18 @@ def get_all_hdf5_files_in_a_directory(dir_path):
     return valid_files
 
 
-def get_all_hdf5_files_from_regex(regex):
+def get_all_hdf5_files_from_regex(regex, verbose=False):
+    valid_file_names = get_all_hdf5_filenames_from_regex(regex=regex, verbose=verbose)
+
+    hdf5_files = []
+    for filepath in valid_file_names:
+        hdf5_file = open_hdf5_file(filepath=filepath)
+        hdf5_files.append(hdf5_file)
+
+    return hdf5_files
+
+
+def get_all_hdf5_filenames_from_regex(regex, verbose=False):
     valid_files = []
     possible_files = glob.glob(regex, recursive=True)
     for file_name in possible_files:
@@ -24,6 +35,13 @@ def get_all_hdf5_files_from_regex(regex):
             valid_files.append(file_name)
 
     valid_files.sort()
+
+    if verbose:
+        print("\nRegex: ", regex)
+        for file_name in valid_files:
+            print(file_name)
+        print("")
+
     return valid_files
 
 
