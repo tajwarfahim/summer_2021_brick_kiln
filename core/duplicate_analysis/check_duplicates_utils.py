@@ -82,6 +82,9 @@ def remove_duplicates_between_two_list_of_files(source_regex, target_regex, save
         print("\nNum total elements: ", num_datapoints)
         print("Num unique elements: ", num_unique_elements, "\n")
 
+    for hdf5_file_to_close in source_hdf5_files + target_hdf5_files:
+        hdf5_file_to_close.close()
+
 
 def remove_duplicates_from_single_list_of_files(regex, save_dir, chunk_size):
     hdf5_files = get_all_hdf5_files_from_regex(regex=regex)
