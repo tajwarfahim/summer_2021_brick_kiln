@@ -77,7 +77,7 @@ def remove_duplicates_between_two_list_of_files(source_regex, target_regex, save
             dataset = np.array(dsets[key])
             if num_unique_elements is None:
                 num_unique_elements = dataset.shape[0]
-            file.create_dataset(key, dataset=dataset)
+            file.create_dataset(key, data=dataset)
 
         print("\nNum total elements: ", num_datapoints)
         print("Num unique elements: ", num_unique_elements, "\n")
