@@ -117,6 +117,9 @@ def create_mixture_dsets(positive_dsets, negative_dsets, num_chunks, common_keys
 
     size_positive_chunk = ceil(get_num_datapoints(datasets=positive_dsets) / num_chunks)
     size_negative_chunk = ceil(get_num_datapoints(datasets=negative_dsets) / num_chunks)
+    
+    print("\nPositive chunk size: ", size_positive_chunk)
+    print("Negative chunk size: ", size_negative_chunk, "\n")
 
     for i in range(num_chunks):
         for key in common_keys:
