@@ -35,6 +35,102 @@ def hash_datasets(list_of_files, keys):
     return hash_strings
 
 
+def compare_datapoint(file_1, file_2, index_1, index_2, common_keys):
+    is_duplicate = True
+    for key in common_keys:
+        dset_1 = file_1[key]
+        dset_2 = file_2[key]
+
+        datapoint_1 = dset_1[index_1]
+        datapoint_2 = dset_2[index_2]
+
+        if not np.array_equal(datapoint_1, datapoint_2):
+            is_duplicate = False
+            break
+
+    return is_duplicate
+
+
+def put_duplicates_at_the_start_of_dsets(dsets_map, duplicate_indices, keys):
+    new_dsets_map = defaultdict(list)
+    for key in keys:
+        for index in duplicate_indices:
+            new_dsets_map[key].append(dsets_map[key][index])
+
+    num_datapoints = get_num_datapoints(datasets=dsets_map)
+    for key in keys:
+        for index in range(num_datapoints):
+            if index not in duplicate_indices:
+                new_dsets_map[key].append(dsets_map[key][index])
+
+    return new_dsets_map
+
+
+def convert_hdf5_file_to_map(file, keys):
+    dset_map = {}
+    for key in keys:
+        dset_map[key] = np.array(file[key])
+
+    return dset_map
+
+
+def analyze_duplicates_between_two_files(source_file_name, target_file_name, save_dir):
+    assert h5.is_hdf5(source_file_name) and h5.is_hdf5(target_file_name)
+
+    print("Source filename: ", source_file_name)
+    print("Target filename: ", target_file_name)
+
+    source_file = h5.File(source_file_name, 'r')
+    target_file = h5.File(target_file_name, 'r')
+
+    common_keys = get_common_keys(list_of_files=[source_file, target_file])
+    print("\nCommon keys between all hdf5 files: ", common_keys, "\n")
+
+    source_num_datapoints = get_num_datapoints(datasets=source_file)
+    target_num_datapoints = get_num_datapoints(datasets=target_file)
+
+    source_dsets = convert_hdf5_file_to_map(file=source_file, keys=common_keys)
+    target_dsets = convert_hdf5_file_to_map(file=target_file, keys=common_keys)
+
+    source_file.close()
+    target_file.close()
+
+    source_file_duplicate_indices = []
+    target_file_duplicate_indices = []
+
+    for i in range(source_num_datapoints):
+        for j in range(target_num_datapoints):
+            if compare_datapoint(source_dsets, target_dsets, i, j, common_keys):
+                source_file_duplicate_indices.append(i)
+                target_file_duplicate_indices.append(j)
+
+    print("Number of duplicates: ", len(source_file_duplicate_indices))
+
+    source_dsets_modified = put_duplicates_at_the_start_of_dsets(
+        dsets_map=source_dsets,
+        duplicate_indices=source_file_duplicate_indices,
+        keys=common_keys,
+    )
+
+    target_dsets_modified = put_duplicates_at_the_start_of_dsets(
+        dsets_map=target_dsets,
+        duplicate_indices=target_file_duplicate_indices,
+        keys=common_keys,
+    )
+
+    divide_and_save_dataset(
+        datasets=source_dsets_modified,
+        save_dir=os.path.join(save_dir, "delta+1"),
+        chunk_size=0,
+    )
+
+    divide_and_save_dataset(
+        datasets=target_dsets_modified,
+        save_dir=os.path.join(save_dir, "positives"),
+        chunk_size=0,
+    )
+
+
 def remove_duplicates_between_two_list_of_files(source_regex, target_regex, save_dir):
     source_hdf5_files = get_all_hdf5_files_from_regex(regex=source_regex, verbose=True)
     target_hdf5_files = get_all_hdf5_files_from_regex(regex=target_regex, verbose=True)

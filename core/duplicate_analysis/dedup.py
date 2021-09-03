@@ -9,6 +9,7 @@ import configargparse
 from .check_duplicates_utils import (
     remove_duplicates_between_two_list_of_files,
     remove_duplicates_from_single_list_of_files,
+    analyze_duplicates_between_two_files,
 )
 
 
@@ -26,6 +27,7 @@ def parse_script_arguments():
     # task option
     parser.add_argument("--check_single_regex", action="store_true")
     parser.add_argument("--check_double_regex", action="store_true")
+    parser.add_argument("--analyze", action="store_true")
 
     # file path option
     parser.add_argument("--target_regex", type=str)
@@ -60,7 +62,14 @@ def run_script():
             chunk_size=args.chunk_size,
         )
 
-    else:
+    elif args.analyze:
+        analyze_duplicates_between_two_files(
+            source_file_name=args.source_regex,
+            target_file_name=args.target_regex,
+            save_dir=args.dedupped_dir,
+        )
+
+    elif args.check_double_regex:
         remove_duplicates_between_two_list_of_files(
             source_regex=args.source_regex,
             target_regex=args.target_regex,
