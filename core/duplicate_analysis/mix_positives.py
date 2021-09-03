@@ -22,7 +22,7 @@ from .check_duplicates_utils import (
 
 def load_all_files(regex):
     files = get_all_hdf5_files_from_regex(regex=regex)
-    common_keys = get_common_keys(list_of_files=neg_files)
+    common_keys = get_common_keys(list_of_files=files)
 
     dsets = {}
     for key in common_keys:
