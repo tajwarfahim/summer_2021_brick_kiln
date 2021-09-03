@@ -1,12 +1,12 @@
 # task configuration
 check_single_regex: False
 check_double_regex: True
-analyze: True
+analyze: False
 
 # file name configuration
 target_regex: /atlas/u/tajwar/dedupped_datasets/conflict_resolved/positives/task_0.hdf5
 source_regex: /atlas/u/tajwar/dedupped_datasets/conflict_resolved/delta+1/task_0.hdf5
-dedupped_dir: /atlas/u/tajwar/dedupped_datasets/duplicates_at_top/
+dedupped_dir: /atlas/u/tajwar/dedupped_datasets/conflict_resolved/delta+1/
 
 # regex
 regex:  /atlas/u/mhelabd/handlabeling_conflicts/no_conflicts/**/delta-1*.hdf5
