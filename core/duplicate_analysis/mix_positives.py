@@ -26,7 +26,7 @@ def load_all_files(regex):
 
     dsets = {}
     for key in common_keys:
-        for file in neg_files:
+        for file in files:
             if key not in dsets:
                 dsets[key] = [np.array(file[key])]
             else:
