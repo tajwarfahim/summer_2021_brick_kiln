@@ -124,13 +124,13 @@ def analyze_duplicates_between_two_files(source_file_name, target_file_name, sav
 
     divide_and_save_dataset(
         datasets=source_dsets_modified,
-        save_dir=os.path.join(save_dir, "delta+1"),
+        save_dir=os.path.join(save_dir, "source"),
         chunk_size=0,
     )
 
     divide_and_save_dataset(
         datasets=target_dsets_modified,
-        save_dir=os.path.join(save_dir, "positives"),
+        save_dir=os.path.join(save_dir, "target"),
         chunk_size=0,
     )
 
