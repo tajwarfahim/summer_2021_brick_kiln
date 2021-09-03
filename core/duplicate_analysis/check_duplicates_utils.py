@@ -63,7 +63,11 @@ def put_duplicates_at_the_start_of_dsets(dsets_map, duplicate_indices, keys):
             if index not in duplicate_indices:
                 new_dsets_map[key].append(dsets_map[key][index])
 
-    return new_dsets_map
+    datasets = {}
+    for key in common_keys:
+        datasets[key] = np.array(new_dsets_map[key])
+
+    return datasets
 
 
 def convert_hdf5_file_to_map(file, keys):
