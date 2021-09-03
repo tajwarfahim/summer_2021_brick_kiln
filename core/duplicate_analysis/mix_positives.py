@@ -151,7 +151,7 @@ def run_script():
     common_keys = set(positive_random_sample.keys()).intersection(set(negative_random_sample.keys()))
     print("\nCommon keys: ", common_keys, "\n")
 
-    mixture_dset, chunk_size = create_mixture_dsets(
+    mixture_dsets, chunk_size = create_mixture_dsets(
         positive_dsets=positive_random_sample,
         negative_dsets=negative_random_sample,
         num_chunks=args.num_chunks,
