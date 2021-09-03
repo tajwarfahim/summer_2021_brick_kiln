@@ -3,6 +3,6 @@ pos_regex: /atlas/u/tajwar/dedupped_datasets/conflict_resolved/positives/**/*.hd
 save_dir: /atlas/u/tajwar/dedupped_datasets/handlabelling_tasks/
 
 negative_samples: 500
-positive_samples: 2500
+positive_samples: 50
 
 num_chunks: 50
