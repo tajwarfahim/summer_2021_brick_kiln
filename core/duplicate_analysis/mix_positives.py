@@ -62,8 +62,8 @@ def randomly_sample_dataset(dsets, num_sample):
     return random_dsets
 
 
-def choose_true_positives(positives_dsets):
-    true_labels = positives_dsets['labels']
+def choose_true_positives(positive_dsets):
+    true_labels = positive_dsets['labels']
 
     indices = []
     for i in range(true_labels.shape[0]):
@@ -74,8 +74,8 @@ def choose_true_positives(positives_dsets):
     print("Num true positives: ", indices.shape[0])
 
     true_positives_dsets = {}
-    for key in positives_dsets:
-        true_positives_dsets[key] = positives_dsets[key][indices]
+    for key in positive_dsets:
+        true_positives_dsets[key] = positive_dsets[key][indices]
 
     print("True positives: ")
     for key in true_positives_dsets:
