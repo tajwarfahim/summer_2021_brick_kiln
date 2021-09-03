@@ -126,7 +126,7 @@ def create_mixture_dsets(positive_dsets, negative_dsets, num_chunks, common_keys
 
     print("Final (unchunked) mixture dataset shapes: ")
     for key in common_keys:
-        mixture_dsets = np.concatenate(mixture_dsets[key])
+        mixture_dsets[key] = np.concatenate(mixture_dsets[key])
         print("Key: ", key, "dataset shape: ", mixture_dsets[key].shape)
     print("")
 
