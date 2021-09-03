@@ -64,7 +64,7 @@ def put_duplicates_at_the_start_of_dsets(dsets_map, duplicate_indices, keys):
                 new_dsets_map[key].append(dsets_map[key][index])
 
     datasets = {}
-    for key in common_keys:
+    for key in keys:
         datasets[key] = np.array(new_dsets_map[key])
 
     return datasets
