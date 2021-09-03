@@ -22,7 +22,7 @@ analyze: False
 # file name configuration
 target_regex: /atlas/u/tajwar/dedupped_datasets/conflict_resolved/positives/task_0.hdf5
 source_regex: /atlas/u/tajwar/dedupped_datasets/conflict_resolved/delta+1/task_0.hdf5
-dedupped_dir: /atlas/u/tajwar/dedupped_datasets/conflict_resolved/delta+1/
+dedupped_dir: /atlas/u/tajwar/dedupped_datasets/conflict_resolved/positives_dedupped/
 
 # regex
 regex:  /atlas/u/mhelabd/handlabeling_conflicts/no_conflicts/**/delta-1*.hdf5
