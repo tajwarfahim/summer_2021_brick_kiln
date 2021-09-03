@@ -1,6 +1,6 @@
 # task configuration
 check_single_regex: False
-check_double_regex: False
+check_double_regex: True
 analyze: True
 
 # file name configuration
