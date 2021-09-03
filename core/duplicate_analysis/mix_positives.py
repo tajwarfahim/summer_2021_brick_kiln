@@ -54,6 +54,7 @@ def randomly_sample_dataset(dsets, num_sample):
     for key in dsets:
         random_dsets[key] = dsets[key][random_indices]
 
+    print("")
     for key in random_dsets:
         print("Key: ", key, "dataset shape: ", random_dsets[key].shape)
 
@@ -71,7 +72,7 @@ def choose_true_positives(positive_dsets):
             indices.append(i)
 
     indices = np.array(indices, dtype=np.int32)
-    print("Num true positives: ", indices.shape[0])
+    print("\nNum true positives: ", indices.shape[0])
 
     true_positives_dsets = {}
     for key in positive_dsets:
@@ -80,6 +81,8 @@ def choose_true_positives(positive_dsets):
     print("True positives: ")
     for key in true_positives_dsets:
         print("Key: ", key, "dataset shape: ", true_positives_dsets[key].shape)
+
+    print("")
 
     return true_positives_dsets
 
@@ -123,6 +126,7 @@ def create_mixture_dsets(positive_dsets, negative_dsets, num_chunks, common_keys
 
     print("Final (unchunked) mixture dataset shapes: ")
     for key in common_keys:
+        mixture_dsets = np.concatenate(mixture_dsets[key])
         print("Key: ", key, "dataset shape: ", mixture_dsets[key].shape)
     print("")
 
