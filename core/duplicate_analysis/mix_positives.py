@@ -5,6 +5,7 @@ import h5py as h5
 import argparse
 import configargparse
 from math import ceil
+from collections import defaultdict
 
 
 # import from our packages
@@ -87,6 +88,34 @@ def choose_true_positives(positive_dsets):
     return true_positives_dsets
 
 
+def create_mixture_dsets(positive_dsets, negative_dsets, common_keys):
+    num_positive_examples = get_num_datapoints(datasets=positive_dsets)
+    num_negative_examples = get_num_datapoints(datasets=negative_dsets)
+
+    print("\nNum positive examples: ", num_positive_examples)
+    print("Num negative examples: ", num_negative_examples, "\n")
+
+    assert num_negative_examples % num_positive_examples == 0
+    assert num_negative_examples >= num_positive_examples
+    neg_pos_ratio = int(num_negative_examples / num_positive_examples)
+    num_chunks = num_positive_examples
+
+    mixture_dsets = defaultdict(list)
+    for i in range(num_chunks):
+        for key in common_keys:
+            mixture_dsets[key].append(positive_dsets[key][i])
+            mixture_dsets[key].extend(negative_dsets[key][i * neg_pos_ratio: (i + 1) * neg_pos_ratio])
+
+
+    print("Final (unchunked) mixture dataset shapes: ")
+    for key in common_keys:
+        mixture_dsets[key] = np.concatenate(mixture_dsets[key])
+        print("Key: ", key, "dataset shape: ", mixture_dsets[key].shape)
+    print("")
+
+    return mixture_dsets
+
+
 def parse_args():
     parser = argparse.ArgumentParser()
     parser = configargparse.ArgumentParser(
@@ -112,31 +141,6 @@ def parse_args():
     return args
 
 
-def create_mixture_dsets(positive_dsets, negative_dsets, num_chunks, common_keys):
-    mixture_dsets = {}
-
-    size_positive_chunk = 10
-    num_negative_chunk = ceil(get_num_datapoints(datasets=negative_dsets) / get_num_datapoints(datasets=positive_dsets))
-    size_negative_chunk = ceil(get_num_datapoints(datasets=negative_dsets) / num_negative_chunk)
-
-    print("\nPositive chunk size: ", size_positive_chunk)
-    print("Negative chunk size: ", size_negative_chunk, "\n")
-
-    for i in range(num_chunks):
-        for key in common_keys:
-            if key not in mixture_dsets:
-                mixture_dsets[key] = [positive_dsets[key][i * size_positive_chunk : (i + 1) * size_positive_chunk]]
-            mixture_dsets[key].append(negative_dsets[key][i * size_negative_chunk : (i + 1) * size_negative_chunk])
-
-    print("Final (unchunked) mixture dataset shapes: ")
-    for key in common_keys:
-        mixture_dsets[key] = np.concatenate(mixture_dsets[key])
-        print("Key: ", key, "dataset shape: ", mixture_dsets[key].shape)
-    print("")
-
-    return mixture_dsets, (size_negative_chunk + size_positive_chunk)
-
-
 def run_script():
     args = parse_args()
 
@@ -155,12 +159,15 @@ def run_script():
     common_keys = set(positive_random_sample.keys()).intersection(set(negative_random_sample.keys()))
     print("\nCommon keys: ", common_keys, "\n")
 
-    mixture_dsets, chunk_size = create_mixture_dsets(
+    mixture_dsets = create_mixture_dsets(
         positive_dsets=positive_random_sample,
         negative_dsets=negative_random_sample,
-        num_chunks=args.num_chunks,
         common_keys=common_keys,
     )
+
+    mixture_dsets_size = get_num_datapoints(datasets=mixture_dsets)
+    assert mixture_dsets_size % args.num_chunks == 0
+    chunk_size = int(mixture_dsets_size / args.num_chunks)
 
     divide_and_save_dataset(
         datasets=mixture_dsets,
