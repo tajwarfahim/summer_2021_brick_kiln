@@ -133,7 +133,7 @@ def parse_args():
     parser.add_argument("--negative_samples", type=int)
     parser.add_argument("--positive_samples", type=int)
 
-    parser.add_argument("--num_chunks", type=int)
+    parser.add_argument("--chunk_size", type=int)
 
     args=parser.parse_args()
     print(parser.format_values())
@@ -166,13 +166,12 @@ def run_script():
     )
 
     mixture_dsets_size = get_num_datapoints(datasets=mixture_dsets)
-    assert mixture_dsets_size % args.num_chunks == 0
-    chunk_size = int(mixture_dsets_size / args.num_chunks)
+    assert mixture_dsets_size % args.chunk_size == 0
 
     divide_and_save_dataset(
         datasets=mixture_dsets,
         save_dir=args.save_dir,
-        chunk_size=chunk_size,
+        chunk_size=args.chunk_size,
     )
 
 if __name__ == "__main__":

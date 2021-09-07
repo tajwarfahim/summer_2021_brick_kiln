@@ -1,8 +1,8 @@
-neg_regex: /atlas/u/tajwar/dedupped_datasets/negative/**/task_0.hdf5
+neg_regex: /atlas/u/tajwar/dedupped_datasets/negative/**/*.hdf5
 pos_regex: /atlas/u/tajwar/dedupped_datasets/conflict_resolved/positives/**/*.hdf5
 save_dir: /atlas/u/tajwar/dedupped_datasets/handlabelling_tasks/
 
-negative_samples: 500
-positive_samples: 50
+negative_samples: 25000
+positive_samples: 2500
 
-num_chunks: 50
+chunk_size: 550
