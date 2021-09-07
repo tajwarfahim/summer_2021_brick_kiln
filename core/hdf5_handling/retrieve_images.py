@@ -1,6 +1,5 @@
 # import from packages
 from PIL import Image
-import imageio
 import argparse
 import configargparse
 import os
