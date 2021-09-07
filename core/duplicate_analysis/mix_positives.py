@@ -104,7 +104,7 @@ def create_mixture_dsets(positive_dsets, negative_dsets, common_keys):
     for i in range(num_chunks):
         for key in common_keys:
             mixture_dsets[key].append(positive_dsets[key][i])
-            mixture_dsets[key].append(negative_dsets[key][i * neg_pos_ratio: (i + 1) * neg_pos_ratio])
+            mixture_dsets[key].extend(negative_dsets[key][i * neg_pos_ratio: (i + 1) * neg_pos_ratio])
 
 
     print("Final (unchunked) mixture dataset shapes: ")
