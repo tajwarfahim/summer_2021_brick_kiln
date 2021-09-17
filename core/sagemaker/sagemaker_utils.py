@@ -1,10 +1,6 @@
-# Citation:
-# 1. https://boto3.amazonaws.com/v1/documentation/api/latest/guide/s3-example-creating-buckets.html
-
+# general packages
 import boto3
 import os
-import logging
-from botocore.exceptions import ClientError
 
 
 def upload_files_to_bucket(file_names, bucket_name, bucket_key_prefix):
@@ -16,23 +12,10 @@ def upload_files_to_bucket(file_names, bucket_name, bucket_key_prefix):
         bucket.upload_file(Filename=file_name, Key=filekey)
 
 
-def create_bucket(bucket_name):
-    try:
-        s3_client = boto3.client("s3", region="us-east-1")
-        location = {'LocationConstraint': 'us-east-1'}
-        s3_client.create_bucket(Bucket=bucket_name, CreateBucketConfiguration=location)
-    except ClientError as e:
-        logging.error(e)
-        return False
-    return True
-
-
 def open_bucket(bucket_name):
     s3 = boto3.resource("s3")
     bucket_names = [bucket.name for bucket in s3.buckets.all()]
-
-    if bucket_name not in bucket_names:
-        assert create_bucket(bucket_name=bucket_name)
+    assert bucket_name in bucket_names
 
     bucket = s3.Bucket(bucket_name)
     return bucket

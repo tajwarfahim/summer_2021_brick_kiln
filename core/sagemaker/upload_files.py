@@ -20,14 +20,9 @@ def parse_script_arguments():
     # config argparse
     parser.add_argument("--config", is_config_file=True)
 
-    # file name options
-    parser.add_argument("--filename_regex", type=str)
-
-    # s3 bucket options
+    # task options
+    parser.add_argument("--img_dir", type=str)
     parser.add_argument("--bucket_name", type=str)
-    parser.add_argument("--bucket_key_prefix", type=str)
-
-    # verbose option
     parser.add_argument("--verbose", action="store_true")
 
     # parse and print args
@@ -37,36 +32,59 @@ def parse_script_arguments():
     return args
 
 
-def get_all_filenames(regex, verbose):
-    potential_filenames = glob.glob(regex, recursive=True)
-    file_names = []
-    for file_name in potential_filenames:
-        if os.path.isfile(file_name):
-            file_names.append(file_name)
+def get_all_directory_elements(directory, content_type, verbose):
+    if content_type == "file":
+        check_function = os.path.isfile
+    elif content_type == "directory":
+        check_function = os.path.isdir
+    else:
+        raise ValueError("Given content type not supported.")
+
+    elements = []
+    for potential_element in os.listdir(directory):
+        path_to_element = os.path.join(directory, potential_element)
+        if check_function(path_to_element):
+            elements.append(path_to_element)
+
+    elements.sort()
 
     if verbose:
-        print("\nNumber of files: ", len(file_names), "\n")
-        for i in range(len(file_names)):
-            print("Index: ", i, " filename: ", file_names[i])
+        print("\nDirectory name: ", directory)
+        print("Number of elements: ", len(elements), "\n")
+        for i in range(len(elements)):
+            print("Index: ", i, "element: ", elements[i])
+
         print("")
 
-    return file_names
+    return elements
 
 
 def run_script():
     args = parse_script_arguments()
 
-    files_to_upload = get_all_filenames(
-        regex=args.filename_regex,
+    subdirs = get_all_directory_elements(
+        directory=args.img_dir,
+        content_type="directory",
         verbose=args.verbose,
     )
 
     start = time.time()
-    upload_files_to_bucket(
-        file_names=files_to_upload,
-        bucket_name=args.bucket_name,
-        bucket_key_prefix=args.bucket_key_prefix,
-    )
+
+    for subdir in subdirs:
+        images_to_upload = get_all_directory_elements(
+            directory=subdir,
+            content_type="file",
+            verbose=args.verbose,
+        )
+
+        bucket_key_prefix = os.path.join(images_to_upload.split("/")[-2], "input")
+
+        upload_files_to_bucket(
+            file_names=files_to_upload,
+            bucket_name=args.bucket_name,
+            bucket_key_prefix=bucket_key_prefix,
+        )
+
     end = time.time()
 
     print("\nTime took to upload all ", len(files_to_upload), "files: ", end - start, "seconds.")
