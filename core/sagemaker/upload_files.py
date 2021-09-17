@@ -87,8 +87,12 @@ def run_script():
 
         end = time.time()
 
-        print("\nTime took to upload all ", len(images_to_upload), "files: ", end - start, "seconds.")
+        print("\nTime took to upload ", len(images_to_upload), "files: ", end - start, "seconds.")
 
 
 if __name__ == "__main__":
+    start = time.time()
     run_script()
+    end = time.time()
+
+    print("\nTime to run script: ", end - start, "seconds.")
