@@ -77,7 +77,7 @@ def run_script():
             verbose=args.verbose,
         )
 
-        bucket_key_prefix = os.path.join(images_to_upload.split("/")[-2], "input")
+        bucket_key_prefix = os.path.join(images_to_upload[0].split("/")[-2], "input")
 
         upload_files_to_bucket(
             file_names=files_to_upload,
