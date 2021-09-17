@@ -68,9 +68,10 @@ def run_script():
         verbose=args.verbose,
     )
 
-    start = time.time()
 
     for subdir in subdirs:
+        start = time.time()
+
         images_to_upload = get_all_directory_elements(
             directory=subdir,
             content_type="file",
@@ -85,9 +86,9 @@ def run_script():
             bucket_key_prefix=bucket_key_prefix,
         )
 
-    end = time.time()
+        end = time.time()
 
-    print("\nTime took to upload all ", len(files_to_upload), "files: ", end - start, "seconds.")
+        print("\nTime took to upload all ", len(files_to_upload), "files: ", end - start, "seconds.")
 
 
 if __name__ == "__main__":
