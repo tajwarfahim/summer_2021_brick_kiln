@@ -18,7 +18,7 @@ def upload_files_to_bucket(file_names, bucket_name, bucket_key_prefix):
 
 def create_bucket(bucket_name):
     try:
-        s3_client = boto3.client("s3")
+        s3_client = boto3.client("s3", region="us-east-1")
         location = {'LocationConstraint': 'us-east-1'}
         s3_client.create_bucket(Bucket=bucket_name, CreateBucketConfiguration=location)
     except ClientError as e:
