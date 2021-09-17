@@ -68,7 +68,6 @@ def run_script():
         verbose=args.verbose,
     )
 
-
     for subdir in subdirs:
         start = time.time()
 
@@ -88,7 +87,7 @@ def run_script():
 
         end = time.time()
 
-        print("\nTime took to upload all ", len(files_to_upload), "files: ", end - start, "seconds.")
+        print("\nTime took to upload all ", len(images_to_upload), "files: ", end - start, "seconds.")
 
 
 if __name__ == "__main__":
