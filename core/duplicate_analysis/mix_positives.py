@@ -65,7 +65,7 @@ def randomly_sample_dataset(dsets, num_sample):
 
 
 def choose_true_positives(positive_dsets):
-    true_labels = positive_dsets['labels']
+    true_labels = positive_dsets["labels"]
 
     indices = []
     for i in range(true_labels.shape[0]):
@@ -104,8 +104,7 @@ def create_mixture_dsets(positive_dsets, negative_dsets, common_keys):
     for i in range(num_chunks):
         for key in common_keys:
             mixture_dsets[key].append(positive_dsets[key][i])
-            mixture_dsets[key].extend(negative_dsets[key][i * neg_pos_ratio: (i + 1) * neg_pos_ratio])
-
+            mixture_dsets[key].extend(negative_dsets[key][i * neg_pos_ratio : (i + 1) * neg_pos_ratio])
 
     print("Final (unchunked) mixture dataset shapes: ")
     for key in common_keys:
@@ -135,7 +134,7 @@ def parse_args():
 
     parser.add_argument("--chunk_size", type=int)
 
-    args=parser.parse_args()
+    args = parser.parse_args()
     print(parser.format_values())
 
     return args
@@ -150,10 +149,12 @@ def run_script():
     true_positives_dsets = choose_true_positives(positive_dsets=positive_dsets)
 
     positive_random_sample = randomly_sample_dataset(
-        dsets=true_positives_dsets, num_sample=args.positive_samples,
+        dsets=true_positives_dsets,
+        num_sample=args.positive_samples,
     )
     negative_random_sample = randomly_sample_dataset(
-        dsets= negative_dsets, num_sample=args.negative_samples,
+        dsets=negative_dsets,
+        num_sample=args.negative_samples,
     )
 
     common_keys = set(positive_random_sample.keys()).intersection(set(negative_random_sample.keys()))
@@ -173,6 +174,7 @@ def run_script():
         save_dir=args.save_dir,
         chunk_size=args.chunk_size,
     )
+
 
 if __name__ == "__main__":
     run_script()

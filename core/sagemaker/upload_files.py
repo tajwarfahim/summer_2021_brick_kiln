@@ -3,9 +3,11 @@ import argparse
 import configargparse
 import glob
 import os
+import time
 
 # imports from our packages
 from .sagemaker_utils import upload_files_to_bucket
+
 
 def parse_script_arguments():
     parser = argparse.ArgumentParser()
@@ -33,6 +35,7 @@ def parse_script_arguments():
 
     return args
 
+
 def get_all_filenames(regex, verbose):
     potential_filenames = glob.glob(regex, recursive=True)
     file_names = []
@@ -48,6 +51,7 @@ def get_all_filenames(regex, verbose):
 
     return file_names
 
+
 def run_script():
     args = parse_script_arguments()
 
@@ -55,11 +59,17 @@ def run_script():
         regex=args.filename_regex,
         verbose=args.verbose,
     )
+
+    start = time.time()
     upload_files_to_bucket(
         file_names=files_to_upload,
         bucket_name=args.bucket_name,
         bucket_key_prefix=args.bucket_key_prefix,
     )
+    end = time.time()
+
+    print("\nTime took to upload all ", len(files_to_upload), "files: ", end - start, "seconds.")
+
 
 if __name__ == "__main__":
     run_script()

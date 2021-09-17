@@ -84,8 +84,8 @@ def analyze_duplicates_between_two_files(source_file_name, target_file_name, sav
     print("Source filename: ", source_file_name)
     print("Target filename: ", target_file_name)
 
-    source_file = h5.File(source_file_name, 'r')
-    target_file = h5.File(target_file_name, 'r')
+    source_file = h5.File(source_file_name, "r")
+    target_file = h5.File(target_file_name, "r")
 
     common_keys = get_common_keys(list_of_files=[source_file, target_file])
     print("\nCommon keys between all hdf5 files: ", common_keys, "\n")

@@ -1,8 +1,9 @@
 import boto3
 import os
 
+
 def upload_files_to_bucket(file_names, bucket_name, bucket_key_prefix):
-    s3 = boto3.resource('s3')
+    s3 = boto3.resource("s3")
     bucket = s3.Bucket(bucket_name)
 
     for file_name in file_names:
