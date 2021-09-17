@@ -28,10 +28,10 @@ def create_bucket(bucket_name):
 
 def open_bucket(bucket_name):
     s3 = boto3.resource("s3")
-    # bucket_names = [bucket.name for bucket in s3.buckets.all()]
-    #
-    # if bucket_name not in bucket_names:
-    #     assert create_bucket(bucket_name=bucket_name)
+    bucket_names = [bucket.name for bucket in s3.buckets.all()]
+
+    if bucket_name not in bucket_names:
+        assert create_bucket(bucket_name=bucket_name)
 
     bucket = s3.Bucket(bucket_name)
     return bucket
