@@ -80,7 +80,7 @@ def run_script():
         bucket_key_prefix = os.path.join(images_to_upload[0].split("/")[-2], "input")
 
         upload_files_to_bucket(
-            file_names=files_to_upload,
+            file_names=images_to_upload,
             bucket_name=args.bucket_name,
             bucket_key_prefix=bucket_key_prefix,
         )
