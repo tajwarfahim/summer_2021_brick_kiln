@@ -27,6 +27,7 @@ def parse_script_arguments():
     parser.add_argument("--bucket_name", type=str)
     parser.add_argument("--bucket_key_prefix", type=str)
 
+    # verbose option
     parser.add_argument("--verbose", action="store_true")
 
     # parse and print args
