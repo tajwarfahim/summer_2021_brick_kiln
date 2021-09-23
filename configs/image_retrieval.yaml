@@ -1,3 +1,3 @@
 # paths to files and directories
-regex: /atlas/u/tajwar/dedupped_datasets/negative/**/*.hdf5
-image_dir: /atlas/u/tajwar/dedupped_datasets/negative_images/
+regex: /atlas/u/tajwar/dedupped_datasets/negative/task_0.hdf5
+image_dir: /atlas/u/tajwar/dedupped_datasets/negative_images/task_0/
