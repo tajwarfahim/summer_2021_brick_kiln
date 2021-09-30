@@ -1,4 +1,4 @@
-neg_regex: /atlas/u/tajwar/dedupped_datasets/negative/**/task_[0-10].hdf5
+neg_regex: /atlas/u/tajwar/dedupped_datasets/negative/**/task_[0-9].hdf5
 pos_regex: /atlas/u/tajwar/dedupped_datasets/conflict_resolved/positives/**/*.hdf5
 save_dir: /atlas/u/tajwar/dedupped_datasets/handlabelling_tasks_2/
 
