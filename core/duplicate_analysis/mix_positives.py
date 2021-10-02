@@ -28,10 +28,11 @@ def load_all_files(regex):
     dsets = {}
     for key in common_keys:
         for file in files:
-            if key not in dsets:
-                dsets[key] = [np.array(file[key])]
-            else:
-                dsets[key].append(np.array(file[key]))
+            if file[key].shape[0] > 0:
+                if key not in dsets:
+                    dsets[key] = [np.array(file[key])]
+                else:
+                    dsets[key].append(np.array(file[key]))
 
     for file in files:
         file.close()
