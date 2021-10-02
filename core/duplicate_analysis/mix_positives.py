@@ -169,7 +169,7 @@ def run_script():
     )
 
     mixture_dsets_size = get_num_datapoints(datasets=mixture_dsets)
-    assert mixture_dsets_size % args.chunk_size == 0
+    assert args.chunk_size == 0 or mixture_dsets_size % args.chunk_size == 0
 
     divide_and_save_dataset(
         datasets=mixture_dsets,
