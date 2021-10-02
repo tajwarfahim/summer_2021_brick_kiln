@@ -1,7 +1,7 @@
 # task configuration
 check_single_regex: False
 check_double_regex: True
-analyze: True
+analyze: False
 
 # file name configuration
 target_regex: /atlas/u/jihyeonlee/mapillary_data/brick_kiln_2019_2020_nonan/**/*.hdf5
