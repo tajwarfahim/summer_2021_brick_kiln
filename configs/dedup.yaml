@@ -4,9 +4,9 @@ check_double_regex: True
 analyze: True
 
 # file name configuration
-target_regex: /atlas/u/tajwar/dedupped_datasets/conflict_resolved/positives/task_0.hdf5
-source_regex: /atlas/u/tajwar/dedupped_datasets/conflict_resolved/delta+1/task_0.hdf5
-dedupped_dir: /atlas/u/tajwar/dedupped_datasets/duplicates_at_top/
+target_regex: /atlas/u/jihyeonlee/mapillary_data/brick_kiln_2019_2020_nonan/**/*.hdf5
+source_regex: //atlas/u/tajwar/dedupped_datasets/conflict_resolved/**/*.hdf5
+dedupped_dir: /atlas/u/tajwar/dedupped_datasets/negatives_no_nan/
 
 # regex
 regex:  /atlas/u/mhelabd/handlabeling_conflicts/no_conflicts/**/delta-1*.hdf5
