@@ -1,3 +1,3 @@
 # paths to files and directories
-regex: /atlas/u/tajwar/dedupped_datasets/handlabelling_tasks/**/task_[0-9].hdf5
+regex: /atlas/u/tajwar/dedupped_datasets/handlabelling_tasks/**/*.hdf5
 image_dir: /atlas/u/tajwar/dedupped_datasets/task_images/
